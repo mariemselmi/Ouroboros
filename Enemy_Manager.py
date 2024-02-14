@@ -42,7 +42,7 @@ class Enemy_Manager:
         self.spawn_new_wave = True  # Flag to control spawning of new waves
         self.total_waves = len(self.waves)  # Total number of waves
 
-    def update(self, enemy_image, speed, scale):
+    def update(self, enemy_image, speed, scale,obstacles):
         # Spawn new wave if no enemies remaining and there are more waves
         if not self.enemies and self.current_wave < self.total_waves and self.spawn_new_wave:
             self.spawn_wave(enemy_image, speed, scale)
@@ -56,7 +56,7 @@ class Enemy_Manager:
 
         # Update enemies
         for enemy in self.enemies:
-            enemy.update()
+            enemy.update(obstacles)
 
 
     def spawn_wave(self, enemy_image, speed, scale):
@@ -73,6 +73,10 @@ class Enemy_Manager:
         for enemy in self.enemies:
             enemy.draw(screen)
             enemy.draw_health_bar(screen)
+        wave_text = pixel_font.render("Wave: {}/{}".format(self.current_wave, self.total_waves), True,
+                                      (255, 255, 255))
+        wave_text_rect = wave_text.get_rect(topright=(SCREEN_WIDTH - 10, 10))
+        screen.blit(wave_text, wave_text_rect)
 
     def check_collisions(self, character, sword_rect):
         for enemy in self.enemies:

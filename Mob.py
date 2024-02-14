@@ -14,7 +14,7 @@ class Mob:
         self.idle_counter = 0
         self.move_direction = random.choice(['up', 'down', 'left', 'right'])
 
-    def wander(self):
+    def wander(self,obstacles):
         if self.move_counter < 50:
             # Move in the chosen direction
             move_distance = random.randint(1, 2)
@@ -37,14 +37,19 @@ class Mob:
                 self.move_counter = 0
                 self.idle_counter = 0
                 self.move_direction = random.choice(['up', 'down', 'left', 'right'])
+        for obstacle in obstacles:
+            if self.rect.colliderect(obstacle.rect):
+                # If collision detected, move character back to previous position
+                self.rect.x -= self.vect.x
+                self.rect.y -= self.vect.y
     def take_damage(self,damage):
         self.health -= damage
         if self.health <= 0:
             self.health = 0
 
-    def update(self):
+    def update(self,obstacles):
         if self.state == 'wander':
-            self.wander()
+            self.wander(obstacles)
 
 
     def draw(self, surface):

@@ -60,7 +60,7 @@ screen = pygame.display.get_surface()
 
 pygame.display.set_caption("Ouroboros")
 icon = pygame.image.load("Ouroboros.svg.png")
-pixel_font = pygame.font.Font("VCR_OSD_MONO_1.001.ttf",65)
+pixel_font = pygame.font.Font("VCR_OSD_MONO_1.001.ttf",57)
 
 bg = pygame.image.load("Menu-Pictures/menu1.png").convert()
 bg_width = bg.get_width()
@@ -149,11 +149,13 @@ while running:
             running = False
     elif current_game_state == GameState.GAME:
         intro.stop()
+        print(enemy_manager.current_wave)
+
         screen.blit(scaled_floor, (0, 0))
         for obstacle in obstacles:
             obstacle.draw(screen)
-        elapsed_time = pygame.time.get_ticks() - timer.start_time  # Calculate elapsed time
-        if elapsed_time >= 60000:  # If one minute (60000 milliseconds) has passed
+        elapsed_time = pygame.time.get_ticks() - timer.start_time
+        if elapsed_time >= 60000:
             current_game_state = GameState.GAME_OVER_TIMER
         character.move(keys,obstacles)
         character_animation_method(keys, FRAME_CHANGE)
@@ -163,7 +165,7 @@ while running:
             # Transition to "Game Over" state with congratulatory message
             current_game_state = GameState.GAME_OVER_SUCCESS
         # Update enemy manager
-        enemy_manager.update(mob_image, 1, 0.1)
+        enemy_manager.update(mob_image, 1, 0.1,obstacles)
 
         # Check if all enemies are defeated
         if len(enemy_manager.enemies) == 0:
@@ -229,7 +231,6 @@ while running:
         screen.blit(text2, text2_rect)
 
     for event in pygame.event.get():
-        print(event.type)
         if event.type == pygame.QUIT:
             running = False
         if current_game_state == GameState.GAME and event.type == character.immunity_event:
