@@ -6,6 +6,7 @@ class Mob:
         int(image.get_width() * scale), int(image.get_height() * scale))).convert_alpha()
         self.speed = speed
         self.rect = self.image.get_rect()
+        self.vect = pygame.math.Vector2(0, 0)
         self.rect.topleft = (x, y)
         self.max_health = max_health
         self.health = max_health
