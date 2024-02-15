@@ -17,33 +17,37 @@ class Character:
         self.swing_timer = 0
         self.swing_duration = 30
 
-    def move(self, keys,obstacles):
+    def move(self, keys, obstacles):
+        # Reset movement vector
+        movement = pygame.Vector2(0, 0)
 
         # Handle character movement based on pressed keys
         if keys[pygame.K_LEFT]:
-            self.vect.x = -self.speed
+            movement.x = -self.speed
             self.facing = "left"
         if keys[pygame.K_RIGHT]:
-            self.vect.x = self.speed
+            movement.x = self.speed
             self.facing = "right"
         if keys[pygame.K_UP]:
-            self.vect.y = -self.speed
+            movement.y = -self.speed
             self.facing = "up"
         if keys[pygame.K_DOWN]:
-            self.vect.y = self.speed
+            movement.y = self.speed
             self.facing = "down"
 
+        # Normalize the vector if moving diagonally
+        if movement.length_squared() > self.speed ** 2:
+            movement.normalize_ip()
+            movement.scale_to_length(self.speed)
+
         # Move the character rect by the calculated movement vector
-        self.rect.x += self.vect.x
-        self.rect.y += self.vect.y
+        self.rect.move_ip(movement)
 
         # Check for collision with obstacles
         for obstacle in obstacles:
             if self.rect.colliderect(obstacle.rect):
                 # If collision detected, move character back to previous position
-                self.rect.x -= self.vect.x
-                self.rect.y -= self.vect.y
-
+                self.rect.move_ip(-movement)
 
 
     def take_damage(self,enemies,damage):

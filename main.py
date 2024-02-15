@@ -7,7 +7,6 @@ import Character
 import Mob
 import random
 from obstacle import Obstacle
-
 from Enemy_Manager import *
 from config import SCREEN_WIDTH, SCREEN_HEIGHT,FPS
 
@@ -98,7 +97,7 @@ character_direction=0
 
 
 pygame.display.set_icon(icon)
-# Load images
+
 unpushed_start_image = pygame.image.load("Menu-Pictures/play-export.png")
 pushed_start_image = pygame.image.load("Menu-Pictures/play-export.png") ##IN NEED OF CHANGE
 unpushed_quit_image = pygame.image.load("Menu-Pictures/quit-export.png")
@@ -132,7 +131,6 @@ running_music=pygame.mixer.Sound('Music/running.wav')
 swing_sound=pygame.mixer.Sound('sword_slash.mp3')
 scaled_floor = pygame.transform.scale(floor_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 timer = Timer()
-
 space_pressed = False
 running = True
 while running:
