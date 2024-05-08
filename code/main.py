@@ -1,29 +1,31 @@
 import pygame, sys
+from settings import *
 from level import Level
-from game_data import csv
-pygame.init()
 
-screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
-clock = pygame.time.Clock()
-level = Level(csv,screen)
+class Game:
+	def __init__(self):
 
+		# general setup
+		pygame.init()
+		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
+		pygame.display.set_caption('Ouroboros')
+		self.clock = pygame.time.Clock()
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+		self.level = Level()
+	
+	def run(self):
+		while True:
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					pygame.quit()
+					sys.exit()
 
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
-    
-    #the whole game run
-    level.run()
-
-
-    pygame.display.update()
-    clock.tick(60)
+			self.screen.fill(WATER_COLOR)
+			self.level.run()
+			pygame.display.update()
+			self.clock.tick(FPS)
 
 
+if __name__ == '__main__':
+	game = Game()
+	game.run()
